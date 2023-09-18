@@ -5,9 +5,9 @@ VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionHouse", "AuctionHouse\AuctionHouse.csproj", "{9DFAE7BD-C44C-4A6E-8154-848267B3DA14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionClient1", "AuctionClient1\AuctionClient1.csproj", "{006B3E4B-DAC5-4E1E-8E11-84BA50FF8224}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bidder1", "AuctionClient1\Bidder1.csproj", "{006B3E4B-DAC5-4E1E-8E11-84BA50FF8224}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuctionClient2", "AuctionClient2\AuctionClient2.csproj", "{78FA748C-3B79-478A-9E94-D9D2C459DB29}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bidder2", "AuctionClient2\Bidder2.csproj", "{78FA748C-3B79-478A-9E94-D9D2C459DB29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,41 +1,33 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 
 IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
 IPAddress ipAddr = ipHost.AddressList[0];
 IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 11111);
-
 Socket listener = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
 try
 {
     listener.Bind(localEndPoint);
     listener.Listen(10);
-    bool listening = true;
-
-    while (listening)
+    bool doorsAreOpen = true;
+    do
     {
-        Console.WriteLine($"Waiting for connections on {ipAddr}");
-
+        Console.WriteLine($"Waiting for new bidder...");
+        // new bidder has entered
         Socket clientSocket = listener.Accept();
-
         Thread clientThread = new Thread(() =>
         {
             byte[] bytes = new byte[1024];
             string data = null;
-            bool connected = true;
-
-            while (connected)
+            bool bidderIsLeaving = false;
+            do
             {
                 int numBytes = clientSocket.Receive(bytes);
                 data = Encoding.ASCII.GetString(bytes, 0, numBytes);
-
                 if (data.IndexOf("<EOF>") > -1)
                 {
-                    connected = false;
+                    bidderIsLeaving = false;
                 }
                 else
                 {
@@ -44,7 +36,7 @@ try
                     var response = Console.ReadLine();
                     if (response == "stop")
                     {
-                        connected = false;
+                        bidderIsLeaving = false;
                         byte[] message = Encoding.ASCII.GetBytes("Connection Closed");
                         clientSocket.Send(message);
                     }
@@ -55,13 +47,12 @@ try
                     }
                 }
             }
-
+            while (!bidderIsLeaving);
             clientSocket.Close();
         });
-
         clientThread.Start();
-    }
-
+    } 
+    while (doorsAreOpen);
     listener.Close();
 }
 catch (Exception e)
