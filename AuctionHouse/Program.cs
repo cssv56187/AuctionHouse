@@ -32,27 +32,31 @@ try
                 else
                 {
                     Console.WriteLine("Text received -> {0} ", data);
-                    Console.WriteLine("Send your response or stop connection by typing 'stop'");
-                    var response = Console.ReadLine();
-                    if (response == "stop")
-                    {
-                        bidderIsLeaving = false;
-                        byte[] message = Encoding.ASCII.GetBytes("Connection Closed");
-                        clientSocket.Send(message);
-                    }
-                    else
-                    {
-                        byte[] message = Encoding.ASCII.GetBytes(response);
-                        clientSocket.Send(message);
-                    }
+                    
                 }
             }
             while (!bidderIsLeaving);
             clientSocket.Close();
         });
         clientThread.Start();
-    } 
+    }
     while (doorsAreOpen);
+
+
+    //Console.WriteLine("Send your response or stop connection by typing 'stop'");
+    //var response = Console.ReadLine();
+    //if (response == "stop")
+    //{
+    //    bidderIsLeaving = false;
+    //    byte[] message = Encoding.ASCII.GetBytes("Connection Closed");
+    //    clientSocket.Send(message);
+    //}
+    //else
+    //{
+    //    byte[] message = Encoding.ASCII.GetBytes(response);
+    //    clientSocket.Send(message);
+    //}
+
     listener.Close();
 }
 catch (Exception e)
