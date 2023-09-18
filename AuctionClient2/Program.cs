@@ -11,17 +11,27 @@ try
     Socket sender = new Socket(ipAddr.AddressFamily,
                SocketType.Stream, ProtocolType.Tcp);
     sender.Connect(localEndPoint);
-    byte[] messageSent = Encoding.ASCII.GetBytes($"bidder: 2 -- has joined the auction!");
+    byte[] messageSent = Encoding.ASCII.GetBytes($"bidder: 1 -- has joined the auction!");
     int byteSent = sender.Send(messageSent);
     bool leavingAuctionHouse = false;
+    Thread receiver = new Thread(() =>
+    {
+        do
+        {
+            byte[] messageReceived = new byte[1024];
+            int byteRecv = sender.Receive(messageReceived);
+            Console.WriteLine("Auctioneer ---> {0}",
+                  Encoding.ASCII.GetString(messageReceived,
+                                             0, byteRecv));
+        }
+        while (!leavingAuctionHouse);
+    });
+    receiver.Start();
+
+
+    Console.WriteLine("Type 'leave' to leave the auction house or give your bet!!");
     do
     {
-        byte[] messageReceived = new byte[1024];
-        int byteRecv = sender.Receive(messageReceived);
-        Console.WriteLine("Auctioneer ---> {0}",
-              Encoding.ASCII.GetString(messageReceived,
-                                         0, byteRecv));
-        Console.WriteLine("Type 'leave' to leave the auction house or give your bet!!");
         var message = Console.ReadLine();
         if (message == "leave")
         {
@@ -36,6 +46,7 @@ try
         }
     }
     while (!leavingAuctionHouse);
+
     sender.Shutdown(SocketShutdown.Both);
     sender.Close();
 }
